@@ -39,8 +39,6 @@ def print_page(driver, **kwargs):
         driver.get(kwargs.get('url'))
         driver.execute_script(f"document.title ='{kwargs.get('id')}'")
         driver.execute_script('window.print();')
-    else:
-        raise ValueError('É necessário passar os parâmetros "url" e "id"')
 
 
 def read_csv(path):
