@@ -15,14 +15,22 @@ def write_csv(path):
 
 
 def verify_url(url):
+    if not url:
+        print("URL NULA")
+        return 'NULA'
+
     try:
-        response = requests.get(url)
-        if response.ok:
-            return True
+        response = requests.get(url, timeout=10, allow_redirects=False)
+        if response.status_code == 200:
+
+            return 'OK'
+        elif response.status_code == 302 or response.status_code == 301:
+            return 'REDIRECT'
         else:
-            return False
-    except requests.exceptions.ConnectionError:
-        return False
+            return 'ERROR'
+    except Exception as error:
+        print(error)
+        return 'ERROR'
 
 
 def read_csv(csv_path):
@@ -35,11 +43,12 @@ def read_csv(csv_path):
         rows_valid.append(header)
 
         for row in reader:
-            is_valid = verify_url(row['URL'])
-            if is_valid:
-                row['Validate'] = 'OK'
-            else:
-                row['Validate'] = 'ERROR'
+            url = row.get('URL')
+            print(f"Verificando URL {url}...")
+            status = verify_url(url)
+            print(status)
+            row['Validate'] = status
+
             row_list = list(row.values())
             rows_valid.append(row_list)
 

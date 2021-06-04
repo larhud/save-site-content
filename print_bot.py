@@ -31,14 +31,19 @@ def configure_driver():
     chrome_options.add_argument('--kiosk-printing')
 
     driver = webdriver.Chrome(executable_path='webdrive/chromedriver', chrome_options=chrome_options)
+    driver.set_page_load_timeout(10)
+
     return driver
 
 
 def print_page(driver, **kwargs):
     if kwargs.get('url') and kwargs.get('id'):
+        print(f"Abrindo página da URL: {kwargs.get('url')}...")
         driver.get(kwargs.get('url'))
+        print('Salvando PDF...')
         driver.execute_script(f"document.title ='{kwargs.get('id')}'")
         driver.execute_script('window.print();')
+        print('PDF salvo com sucesso.')
 
 
 def read_csv(path):
