@@ -22,7 +22,6 @@ def verify_url(url):
     try:
         response = requests.get(url, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-
             return 'OK'
         elif response.status_code == 302 or response.status_code == 301:
             return 'REDIRECT'
